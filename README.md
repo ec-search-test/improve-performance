@@ -1,4 +1,8 @@
-# improve-performance
+# Requirements
+- All the following tasks can be done without adding any other dependencies
+- Do not modify the unit tests. They will all pass once the code is fixed
+
+# Improve-performance
 
 The project contains a service - NumberService. The service has a public method findSmallestDuplicate, which accepts a list of numbers and returns the smallest duplicate or null if there are no duplicates. 
   
