@@ -1,16 +1,12 @@
 package eu.europa.ec.digit.search.improveperformance;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.*;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -28,7 +24,6 @@ public class NumberService {
             for (int j = i + 1; j < data.size(); j++) {
 
                 if (data.get(i).equals(data.get(j))) {
-
                     log.info("found duplicate {}", data.get(j));
                     duplicates.add(data.get(j));
                 }
@@ -40,9 +35,53 @@ public class NumberService {
     }
 
     public Integer findSmallestDuplicateImproved(List<Integer> data) {
-        
-        throw new UnsupportedOperationException("Not implemented.");
+        if (data == null || data.isEmpty()) {
+            return null;
+        }
+        if (data.size() < 10_000) {
+            return findSmallestDuplicateImprovedAlternative(data);
+        }
+        // for large collections it can be faster to work with an array
+        return checkDuplicates(data.toArray(new Integer[0]));
+    }
 
+    /**
+     * Find the smallest duplicate number in a collection by using the Set's property of uniqueness.
+     * @param data
+     * @return
+     */
+    private Integer findSmallestDuplicateImprovedAlternative(List<Integer> data) {
+        if (data == null || data.isEmpty()) {
+            return null;
+        }
+        int smallestDuplicate = Integer.MAX_VALUE;
+        Set<Integer> temp = new HashSet<>();
+        for (int i = 0; i < data.size(); i++) {
+            Integer number = data.get(i);
+            if (number < smallestDuplicate && !temp.add(number)) {
+                smallestDuplicate = number;
+            }
+        }
+        return smallestDuplicate == Integer.MAX_VALUE ? null : smallestDuplicate;
+    }
+
+    private Integer checkDuplicates(Integer[] array) {
+        int maxValue = array.length;
+
+        // first pass over the array in order to mark the duplicates (by adding maxValue more than once)
+        for (int i = 0; i < array.length; i++) {
+            int index = array[i] % maxValue;
+            array[index] += maxValue;
+        }
+
+        int smallestDuplicate = Integer.MAX_VALUE;
+        // now the second pass to get the marked elements and determine the smallest one
+        for (int i = 0; i < array.length; i++) {
+            if (i < smallestDuplicate && array[i] / maxValue >= 2) {
+                smallestDuplicate = i;
+            }
+        }
+        return smallestDuplicate == Integer.MAX_VALUE ? null : smallestDuplicate;
     }
 
     public List<Integer> generateData() {
