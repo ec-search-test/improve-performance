@@ -4,8 +4,10 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
@@ -40,9 +42,20 @@ public class NumberService {
     }
 
     public Integer findSmallestDuplicateImproved(List<Integer> data) {
-        
-        throw new UnsupportedOperationException("Not implemented.");
+        Set<Integer> dataSet = new HashSet<>();
+        Integer min = null;
 
+        for (Integer item : data) {
+            if (!dataSet.add(item)) {
+                log.info("found duplicate {}", item);
+
+                if (min == null || item < min) {
+                    min = item;
+                }
+            }
+        }
+
+        return min;
     }
 
     public List<Integer> generateData() {
