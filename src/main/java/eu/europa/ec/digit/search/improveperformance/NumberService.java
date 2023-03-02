@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NumberService {
 
     private static final int SAMPLE_SIZE = 100_000;
-    private static final int PARALLEL_THRESHOLD = 300_000;
+    private static final int PARALLEL_THRESHOLD = 1_000_000;
 
     private Random random = new Random();
 
