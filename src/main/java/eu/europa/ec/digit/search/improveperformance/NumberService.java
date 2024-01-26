@@ -41,9 +41,8 @@ public class NumberService {
 
         Set<Integer> uniqueValues = new HashSet<>();
         return data.stream()
-                .filter(number -> !uniqueValues.add(number))
-                .collect(Collectors.toSet())
-                .stream().sorted().findFirst().orElse(null);
+                .filter(number -> !uniqueValues.add(number)).sorted().findFirst().orElse(null);
+
 
     }
 
