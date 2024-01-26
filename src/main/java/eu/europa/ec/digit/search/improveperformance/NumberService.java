@@ -39,9 +39,9 @@ public class NumberService {
 
     public Integer findSmallestDuplicateImproved(List<Integer> data) {
 
-        Set<Integer> items = new HashSet<>();
+        Set<Integer> uniqueValues = new HashSet<>();
         return data.stream()
-                .filter(n -> !items.add(n))
+                .filter(number -> !uniqueValues.add(number))
                 .collect(Collectors.toSet())
                 .stream().sorted().findFirst().orElse(null);
 
