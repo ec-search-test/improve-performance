@@ -1,16 +1,16 @@
 package eu.europa.ec.digit.search.improveperformance;
 
-import static java.util.stream.Collectors.toList;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -39,16 +39,23 @@ public class NumberService {
 
     }
 
-    public Integer findSmallestDuplicateImproved(List<Integer> data) {
-        
-        throw new UnsupportedOperationException("Not implemented.");
+    public Integer findSmallestDuplicateImproved(final List<Integer> data) {
+        final var set = new HashSet<Integer>(data.size(), 1.0f);
+        var minDuplicate = (Integer) null;
 
+        for (final var d : data) {
+            if (!set.add(d) && (minDuplicate == null || minDuplicate > d)) {
+                minDuplicate = d;
+            }
+        }
+
+        return minDuplicate;
     }
 
     public List<Integer> generateData() {
 
         List<Integer> data = IntStream.range(0, SAMPLE_SIZE).boxed().collect(toList());
-        
+
         data.add(data.get(random.nextInt(data.size())));
         log.info("first duplicate number is: {}", data.get(data.size() - 1));
         data.add(data.get(random.nextInt(data.size())));
