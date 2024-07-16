@@ -40,7 +40,7 @@ public class NumberService {
     }
 
     public Integer findSmallestDuplicateImproved(final List<Integer> data) {
-        final var set = new HashSet<Integer>();
+        final var set = new HashSet<Integer>(data.size(), 1.0f);
         var minDuplicate = (Integer) null;
 
         for (final var d : data) {
